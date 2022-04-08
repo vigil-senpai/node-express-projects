@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1", 
-    "devstart": "node task-manager/index.js"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "devstart": "nodemon task-manager/index.js"
   },
   "repository": {
     "type": "git",
@@ -17,5 +17,10 @@
   "bugs": {
     "url": "https://github.com/vigil-senpai/node-express-projects/issues"
   },
-  "homepage": "https://github.com/vigil-senpai/node-express-projects#readme"
+  "homepage": "https://github.com/vigil-senpai/node-express-projects#readme",
+  "dependencies": {
+    "express": "^4.17.3",
+    "mongoose": "^6.2.10",
+    "nodemon": "^2.0.15"
+  }
 }
