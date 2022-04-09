@@ -17,4 +17,4 @@ app.use('/api/v1/tasks', tasks);
 // LISTENER
 app.listen(port, () => {
     console.log(`[+] App is listening on port ${port}`); 
-})
+}); 
