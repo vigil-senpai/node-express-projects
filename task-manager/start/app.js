@@ -2,11 +2,12 @@ const express = require('express');
 const app = express(); 
 const tasks = require('./routes/tasks'); 
 const connection = require('./database/connect');
+const notFound = require('./middleware/not-found'); 
 require('dotenv').config(); 
 // require('dotenv').config({path: "./.env"}); 
 // require('dotenv/config')
 
-const port = 8000; 
+const port = process.env.PORT; 
 
 const startServer = async () => {
     try {
@@ -24,7 +25,7 @@ const startServer = async () => {
 app.use(express.json()); 
 
 // ROUTES
-
 app.use('/api/v1/tasks', tasks); 
+app.use(notFound); 
 
 startServer()

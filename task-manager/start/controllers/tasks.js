@@ -1,55 +1,71 @@
-const getAllTasks = (req, res) => {
-    res.json({
-        'msg': 'get all tasks'
-    });
-}
+const Task = require('../models/tasks'); 
 
-const createTask = (req, res) => {
-    let id = req.body.id; 
-    if(!id) {
-        res.json({
-            'error': 'please provide id'
-        }); 
-    }
-    else {
-        res.json({
-            'msg': `create new task: ${req.body.id}`
+const getAllTasks = async (req, res) => {
+    try {
+        var tasks = await Task.find(); 
+        res.status(201).json({
+            // sucess: true
+            status: "success", 
+            data: {
+                tasks, 
+                amount: tasks.length
+            }
         });
     }
-}
-
-const getTask = (req, res) => {
-    res.json({
-        'msg': `get a single task ${req.params.ID}`
-    });
-}
-
-const updateTask = (req, res) => {
-    let id = req.body.id; 
-    let newName = req.body.name; 
-    if(!id || !newName) {
-        res.json({
-            'msg': 'the parameters aren\'t fully complete'
-        })
-    }
-    else {
-        res.json({
-            'msg': `update Task ${id}. Changed it's name into ${newName}`
-        });
+    catch (error) {
+        res.status(500).json({msg: error});
     }
 }
 
-const deleteTask = (req, res) => {
-    let id = req.body.id; 
-    if(!id) {
-        res.json({
-            'error': 'please provide id'
-        }); 
+const createTask = async (req, res) => {
+    try {
+        var task = await Task.create(req.body); 
+        res.status(200).json({task}); 
     }
-    else {
-        res.json({
-            'msg': `deleting task with id of ${req.body.id}`
-        });
+    catch(error) {
+        res.status(500).json({msg: error});
+    }
+}
+
+const getTask = async (req, res) => {
+    var searchID = req.params.ID;
+    try {
+        var task = await Task.findOne({'_id': searchID}); 
+        if(!task) {
+            return res.status(404).json({msg: `ID ${searchID} not found`}); 
+        }
+        res.status(201).json({task}); 
+    }
+    catch(error) {
+        res.status(500).json({msg: error})
+    }
+}
+
+const updateTask = async (req, res) => {
+    var searchID = req.body._id; 
+    try {
+        var task = await Task.findOneAndUpdate({'_id': searchID}, req.body.data, {new: true, runValidators: true}); 
+        if(!task) {
+            return res.status(404).json({msg: `ID ${searchID} not found`}); 
+        }
+        res.status(200).json({task});
+    }
+    catch(error) {
+        res.status(500).json({msg: error}); 
+    }
+}
+
+const deleteTask = async (req, res) => {
+    var searchID = req.body._id; 
+    try {
+        var task = await Task.findOneAndDelete({'_id': searchID}); 
+        if(!task) {
+            return res.status(404).json({msg: `ID ${searchID} not found`}); 
+        }
+        res.status(200).json({task: null, status: 'success'});
+    }
+    catch(error) {
+        res.status(500).json({msg: error}); 
     }
 }
 
