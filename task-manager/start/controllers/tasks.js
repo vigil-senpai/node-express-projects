@@ -1,73 +1,42 @@
 const Task = require('../models/tasks'); 
+const asyncWrapper = require('../middleware/async'); 
 
-const getAllTasks = async (req, res) => {
-    try {
-        var tasks = await Task.find(); 
-        res.status(201).json({
-            // sucess: true
-            status: "success", 
-            data: {
-                tasks, 
-                amount: tasks.length
-            }
-        });
-    }
-    catch (error) {
-        res.status(500).json({msg: error});
-    }
-}
+const getAllTasks = asyncWrapper( async (req, res) => {
+    var tasks = await Task.find(); 
+    res.status(200).json({tasks})
+})
 
-const createTask = async (req, res) => {
-    try {
-        var task = await Task.create(req.body); 
-        res.status(200).json({task}); 
-    }
-    catch(error) {
-        res.status(500).json({msg: error});
-    }
-}
+const createTask = asyncWrapper(async (req, res) => {
+    var task = await Task.create(req.body); 
+    res.status(200).json({task}); 
+})
 
-const getTask = async (req, res) => {
+const getTask = asyncWrapper(async (req, res) => {
     var searchID = req.params.ID;
-    try {
-        var task = await Task.findOne({'_id': searchID}); 
-        if(!task) {
-            return res.status(404).json({msg: `ID ${searchID} not found`}); 
-        }
-        res.status(201).json({task}); 
+    var task = await Task.findOne({'_id': searchID}); 
+    if(!task) {
+        return res.status(404).json({msg: `ID ${searchID} not found`}); 
     }
-    catch(error) {
-        res.status(500).json({msg: error})
-    }
-}
+    res.status(201).json({task}); 
+})
 
-const updateTask = async (req, res) => {
+const updateTask = asyncWrapper(async (req, res) => {
     var searchID = req.body._id; 
-    try {
-        var task = await Task.findOneAndUpdate({'_id': searchID}, req.body.data, {new: true, runValidators: true}); 
-        if(!task) {
-            return res.status(404).json({msg: `ID ${searchID} not found`}); 
-        }
-        res.status(200).json({task});
+    var task = await Task.findOneAndUpdate({'_id': searchID}, req.body.data, {new: true, runValidators: true}); 
+    if(!task) {
+        return res.status(404).json({msg: `ID ${searchID} not found`}); 
     }
-    catch(error) {
-        res.status(500).json({msg: error}); 
-    }
-}
+    res.status(200).json({task});
+})
 
-const deleteTask = async (req, res) => {
+const deleteTask = asyncWrapper(async (req, res) => {
     var searchID = req.body._id; 
-    try {
-        var task = await Task.findOneAndDelete({'_id': searchID}); 
-        if(!task) {
-            return res.status(404).json({msg: `ID ${searchID} not found`}); 
-        }
-        res.status(200).json({task: null, status: 'success'});
+    var task = await Task.findOneAndDelete({'_id': searchID}); 
+    if(!task) {
+        return res.status(404).json({msg: `ID ${searchID} not found`}); 
     }
-    catch(error) {
-        res.status(500).json({msg: error}); 
-    }
-}
+    res.status(200).json({task: null, status: 'success'});
+})
 
 module.exports = {
     getAllTasks, 
