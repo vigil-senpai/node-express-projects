@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "taskmanager": "nodemon ./task-manager/start/app.js"
+    "taskmanager": "nodemon ./task-manager/start/app.js", 
+    "store-api": "nodemon ./store-api/app.js"
   },
   "repository": {
     "type": "git",
