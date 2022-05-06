@@ -1,12 +1,7 @@
 const mongoose = require('mongoose')
 
 const connectDatabase = (uri) => {
-    return mongoose.connect(uri, () => {
-        useNewUrlParser = true, 
-        useCreateIndex = true, 
-        useFindAndModify = true, 
-        useUnifiedTopology = true
-    })
+    return mongoose.connect(uri)
 }
 
 module.exports = connectDatabase
