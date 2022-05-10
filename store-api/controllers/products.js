@@ -29,8 +29,15 @@ const getAllProducts = asyncWrapper(async(req, res) => {
             $options: 'i'
         }
     }
-    console.log('[*]', filterQuery)
-    const products = await Product.find(filterQuery)
+    var sortList
+    if(sort) {
+        sortList = sort.split(',').join(' ')
+    }
+    else {
+        sortList = 'createdAt'
+    }
+    console.log('[*]', filterQuery, sortList)
+    const products = await Product.find(filterQuery).sort(sortList)
     res.status(200).json({
         nbHits: products.length, 
         products: products
