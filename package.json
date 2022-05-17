@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "taskmanager": "nodemon ./task-manager/start/app.js",
-    "store-api": "nodemon ./store-api/app.js", 
+    "store-api": "nodemon ./store-api/app.js",
     "jwt": "nodemon ./jwt/app.js"
   },
   "repository": {
@@ -25,6 +25,7 @@
     "express": "^4.17.3",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.2.10",
-    "nodemon": "^2.0.15"
+    "nodemon": "^2.0.15",
+    "uuid": "^8.3.2"
   }
 }
